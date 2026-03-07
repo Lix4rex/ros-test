@@ -6,7 +6,7 @@ import os
 
 packageName = "car_square"
 
-xacroRelativePath       = "model/model.xacro"
+xacroRelativePath       = "model/model_simu.xacro"
 rvizRelativePath        = "config/config.rviz"
 ros2controlRelativePath = "config/robot_controller.yaml"
 
