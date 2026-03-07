@@ -6,7 +6,9 @@
     "files.associations": {
         "*.repos": "yaml",
         "*.world": "xml",
-        "*.xacro": "xml"
+        "*.xacro": "xml",
+        "functional": "cpp",
+        "sstream": "cpp"
     },
     "python.analysis.extraPaths": [
         "/opt/ros/${env:ROS_DISTRO}/lib/ros_site_packages/"
@@ -72,4 +74,5 @@
     ],
     "ament-task-provider.envSetup": "source /opt/ros/${env:ROS_DISTRO}/setup.bash",
     "ROS2.distro": "${env:ROS_DISTRO}",
+    "cmake.sourceDirectory": "/home/lixarex/Documents/pcb/test-ros2/src/car_square",
 }

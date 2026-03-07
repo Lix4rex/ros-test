@@ -1,0 +1,46 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10 #Hz
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    arm_position_controller:
+      type: position_controllers/JointGroupPositionController
+
+    omni_wheel_drive_controller:
+      type: omni_wheel_drive_controller/OmniWheelDriveController
+
+arm_position_controller:
+  ros__parameters:
+    joints:
+      - first_moving_arm_joint
+      - second_moving_arm_joint
+      - first_pliers_joint
+      - second_pliers_joint
+    interface_name: position
+
+omni_wheel_drive_controller:
+  ros__parameters:
+    wheel_names:
+      - lf_joint
+      - rf_joint
+      - rb_joint
+      - lb_joint
+
+    # IMPORTANT : ordre anti-horaire vu du dessus
+    # commence par la roue alignée avec +X (avant)
+
+    wheel_offset: 0.0
+
+    robot_radius: 0.20        # distance centre → roue (m)
+    wheel_radius: 0.05        # rayon de la roue (m)
+
+    base_frame_id: base_link
+    odom_frame_id: odom
+
+    open_loop: true           # Gazebo → OK
+    position_feedback: false  # on utilise la vitesse
+
+    enable_odom_tf: true
+    cmd_vel_timeout: 0.5
