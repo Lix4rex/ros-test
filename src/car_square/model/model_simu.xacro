@@ -16,13 +16,28 @@
 
                 <collision>
                         <geometry>
-                        <box size="0.3 0.25 0.05"/>
+                        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
                         </geometry>
                         <origin xyz="0 0 ${chassis_offset}" rpy="0 0 0"/>
                 </collision>
 
                 <xacro:chassis_inertia />
         </link>
+
+        <link name="visual_front">
+                <visual>
+                        <geometry>
+                        <box size="${chassis_length/8} ${chassis_width/2} ${chassis_height/4}"/>
+                        </geometry>
+                        <origin xyz="${3*chassis_length/8} 0 ${1.5*chassis_offset - chassis_height/8}" rpy="0 0 0"/>
+                        <material name="green"/>
+                </visual>
+        </link>
+        <joint name="visual_front_joint" type="fixed">
+                <parent link="base_link"/>
+                <child link="visual_front"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+        </joint>
 
         <!-- LINKS ET JOINTS DES ROUES -->
 
@@ -62,28 +77,24 @@
                         <command_interface name="velocity"/>
                         <state_interface name="position"/>
                         <state_interface name="velocity"/>
-                        <state_interface name="effort"/>
                 </joint>
 
                 <joint name="rf_joint">
                         <command_interface name="velocity"/>
                         <state_interface name="position"/>
                         <state_interface name="velocity"/>
-                        <state_interface name="effort"/>
                 </joint>
 
                 <joint name="lb_joint">
                         <command_interface name="velocity"/>
                         <state_interface name="position"/>
                         <state_interface name="velocity"/>
-                        <state_interface name="effort"/>
                 </joint>
 
                 <joint name="rb_joint">
                         <command_interface name="velocity"/>
                         <state_interface name="position"/>
                         <state_interface name="velocity"/>
-                        <state_interface name="effort"/>
                 </joint>
 
         </ros2_control>

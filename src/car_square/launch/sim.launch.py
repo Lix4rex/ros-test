@@ -145,6 +145,19 @@ def generate_launch_description():
         )
     )
 
+    car_controller = launch_ros.actions.Node(
+        package="car_square",
+        executable="car_controller"
+    )
+
+    joy_node = launch_ros.actions.Node(
+        package="joy",
+        executable="joy_node",
+        parameters=[{
+            "device_id": 0,
+        }]
+    )
+
     # ── Description finale ───────────────────────────────────────────────────
     node_list = [
         gazebo,
@@ -154,6 +167,9 @@ def generate_launch_description():
         gz_spawn_entity,
         robot_state_publisher_node,
         rviz_node,
+
+        car_controller,
+
         post_spawn,   # déclenche controllers + merger après spawn
     ]
 

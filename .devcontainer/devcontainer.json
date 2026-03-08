@@ -16,6 +16,7 @@
 		"--cap-add=SYS_PTRACE",
 		"--security-opt=seccomp:unconfined",
 		"--security-opt=apparmor:unconfined",
+		"--privileged",
 		// X11 host
 		"--volume=/tmp/.X11-unix:/tmp/.X11-unix:rw",
 		// Wayland host
@@ -28,13 +29,14 @@
 		// Share user run time settings
 		"--volume=/run/user/1000:/run/user/1000", // Change 1000 to match your UID
 		// uncomment to use Nvidia GPU with Linux, https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
-		"--runtime=nvidia"
+		"--runtime=nvidia",
 		// uncomment to use Nvidia GPU with Windows WSL2
 		// "--volume=/usr/lib/wsl:/usr/lib/wsl",
 		// "--device=/dev/dxg",
 		// "--device=/dev/dri/card0",
 		// "--device=/dev/dri/renderD128",
 		// "--gpus=all"
+		"--volume=/dev/input:/dev/input"
 	],
 	"containerEnv": {
 		"DISPLAY": "${localEnv:DISPLAY}", // Needed for GUI try ":0" for windows
@@ -45,8 +47,11 @@
 		// "QT_QPA_PLATFORM": "wayland", // uncomment to force Wayland
 		// For audio
 		"PULSE_SERVER": "${localEnv:PULSE_SERVER}",
-		"LIBGL_ALWAYS_SOFTWARE": "1" // Needed for software rendering of opengl
+		"LIBGL_ALWAYS_SOFTWARE": "0", // Needed for software rendering of opengl
+		"__NV_PRIME_RENDER_OFFLOAD": "1",
+		"__GLX_VENDOR_LIBRARY_NAME": "nvidia"
 	},
+	"postStartCommand": "[ -e /dev/input/js0 ] && sudo chmod a+rw /dev/input/js0 || true",
 	"remoteUser": "ros",
 	// Set *default* container specific settings.json values on container create.
 	"customizations": {
