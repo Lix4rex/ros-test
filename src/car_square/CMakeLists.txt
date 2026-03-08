@@ -7,13 +7,8 @@ endif()
 find_package(ament_cmake REQUIRED)
 
 find_package(rclcpp REQUIRED)
-find_package(control_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
-
-add_executable(odom_calculator src/odom_calculator.cpp)
-ament_target_dependencies(odom_calculator rclcpp control_msgs)
-install(TARGETS odom_calculator DESTINATION lib/${PROJECT_NAME})
 
 add_executable(car_controller src/car_controller.cpp)
 ament_target_dependencies(car_controller rclcpp geometry_msgs sensor_msgs)

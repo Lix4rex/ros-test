@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 10 #Hz
+    update_rate: 10
     use_sim_time: false
 
     joint_state_broadcaster:
@@ -17,19 +17,16 @@ omni_wheel_drive_controller:
       - rb_joint
       - lb_joint
 
-    # IMPORTANT : ordre anti-horaire vu du dessus
-    # commence par la roue alignée avec +X (avant)
-
     wheel_offset: 0.7854
      
-    robot_radius: 1.84        # distance centre → roue (m)
-    wheel_radius: 0.31193181848        # rayon de la roue (m)
+    robot_radius: 1.84
+    wheel_radius: 0.31193181848
 
     base_frame_id: base_link
     odom_frame_id: odom
 
-    open_loop: false           # Gazebo → OK
-    position_feedback: false  # on utilise la vitesse
+    open_loop: false
+    position_feedback: false
 
     use_sim_time: false
 

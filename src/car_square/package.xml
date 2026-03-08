@@ -25,7 +25,6 @@
 
 
   <depend>rclcpp</depend>
-  <depend>control_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>sensor_msgs</depend>
 

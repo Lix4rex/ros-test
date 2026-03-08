@@ -1,25 +1,25 @@
 import launch
 from launch.substitutions import Command
+from launch_ros.parameter_descriptions import ParameterValue
 import launch_ros
 import os
 
-packageName = "car_square"
-
+packageName             = "car_square"
 xacroRelativePath       = "model/model.xacro"
 ros2controlRelativePath = "config/robot_controller.yaml"
 
-
 def generate_launch_description():
 
-    # ── Paths ────────────────────────────────────────────────────────────────
+    # ── Paths ─────────────────────────────────────────────────────────────────
     pkgPath         = launch_ros.substitutions.FindPackageShare(package=packageName).find(packageName)
     xacroModelPath  = os.path.join(pkgPath, xacroRelativePath)
     ros2controlPath = os.path.join(pkgPath, ros2controlRelativePath)
 
-    robot_desc        = Command(['xacro ', xacroModelPath])
+    # ── Fix : ParameterValue force le type string pour xacro ─────────────────
+    robot_desc        = ParameterValue(Command(['xacro ', xacroModelPath]), value_type=str)
     robot_description = {"robot_description": robot_desc}
 
-    # ── ros2_control_node (remplace Gazebo comme moteur du controller_manager)
+    # ── ros2_control_node ─────────────────────────────────────────────────────
     ros2_control_node = launch_ros.actions.Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -36,12 +36,6 @@ def generate_launch_description():
     )
 
     # ── Spawners (démarrent 2s après ros2_control_node) ───────────────────────
-    joint_state_broadcaster_spawner = launch_ros.actions.Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=["joint_state_broadcaster"],
-    )
-
     robot_controller_spawner = launch_ros.actions.Node(
         package="controller_manager",
         executable="spawner",
@@ -53,7 +47,6 @@ def generate_launch_description():
             target_action=ros2_control_node,
             on_start=[
                 launch.actions.TimerAction(period=2.0, actions=[
-                    joint_state_broadcaster_spawner,
                     robot_controller_spawner,
                 ])
             ]
