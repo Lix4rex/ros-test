@@ -43,20 +43,23 @@ namespace micro_ros_hardware
 
                 // Publisher → ESP32 : vitesses cibles de chaque roue
                 wheel_cmd_pub_ = node_->create_publisher<std_msgs::msg::Float64MultiArray>(
-                cmd_topic_, rclcpp::QoS(10));
-
+                        cmd_topic_, rclcpp::QoS(10)
+                );
+                
                 // Subscriber ← ESP32 : positions et vitesses encodeurs
                 joint_state_sub_ = node_->create_subscription<sensor_msgs::msg::JointState>(
-                state_topic_, rclcpp::QoS(10),
-                [this](const sensor_msgs::msg::JointState::SharedPtr msg) {
-                        std::lock_guard<std::mutex> lock(joint_state_mutex_);
-                        latest_joint_states_ = *msg;
-                        joint_states_received_ = true;
-                });
+                        state_topic_, rclcpp::QoS(10),
+                        [this](const sensor_msgs::msg::JointState::SharedPtr msg) {
+                                std::lock_guard<std::mutex> lock(joint_state_mutex_);
+                                latest_joint_states_ = *msg;
+                                joint_states_received_ = true;
+                        }
+                );
 
                 RCLCPP_INFO(rclcpp::get_logger("MicroRosHardwareInterface"),
-                "Configuré — cmd: %s | states: %s",
-                cmd_topic_.c_str(), state_topic_.c_str());
+                        "Configuré — cmd: %s and %s | states: %s",
+                        cmd_topic_.c_str(), cmd_topic_.c_str(), state_topic_.c_str()
+                );
 
                 return hardware_interface::CallbackReturn::SUCCESS;
         }
