@@ -41,14 +41,6 @@ def generate_launch_description():
         condition=launch.conditions.IfCondition(gui)
     )
 
-    gazebo_headless = launch.actions.IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [launch_ros.substitutions.FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
-        ),
-        launch_arguments=[("gz_args", "--headless-rendering -s -r -v 3 empty.sdf")],
-        condition=launch.conditions.UnlessCondition(gui)
-    )
-
     # ── Bridges ──────────────────────────────────────────────────────────────
     clock_bridge = launch_ros.actions.Node(
         package="ros_gz_bridge",
@@ -161,7 +153,6 @@ def generate_launch_description():
     # ── Description finale ───────────────────────────────────────────────────
     node_list = [
         gazebo,
-        gazebo_headless,
         clock_bridge,
         gz_joint_state_bridge,
         gz_spawn_entity,
@@ -170,7 +161,7 @@ def generate_launch_description():
 
         car_controller,
 
-        post_spawn,   # déclenche controllers + merger après spawn
+        post_spawn
     ]
 
     return launch.LaunchDescription(declared_arguments + node_list)

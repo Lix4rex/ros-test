@@ -53,8 +53,24 @@ def generate_launch_description():
         )
     )
 
+    car_controller = launch_ros.actions.Node(
+        package="car_square",
+        executable="car_controller"
+    )
+
+    joy_node = launch_ros.actions.Node(
+        package="joy",
+        executable="joy_node",
+        parameters=[{
+            "device_id": 0,
+        }]
+    )
+
     return launch.LaunchDescription([
         ros2_control_node,
         robot_state_publisher_node,
+
+        car_controller,
+
         post_start,
     ])
